@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private UserRepository userRepository;
@@ -30,7 +30,14 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UserEntity> register(@RequestBody RegisterDto registerDto) {
-        UserEntity user = userRepository.save(new UserEntity(registerDto.username, passwordEncoder.encode(registerDto.password), tokenProvider.generateToken()));
+        if (userRepository.findByUsername(registerDto.username) != null) {
+            return new ResponseEntity<>(new UserEntity("username_taken_user",
+                    "username_taken_password",
+                    "",
+                    ""),
+                    HttpStatus.BAD_REQUEST);
+        }
+        UserEntity user = userRepository.save(new UserEntity(registerDto.username, passwordEncoder.encode(registerDto.password), tokenProvider.generateToken(), registerDto.pubKey));
         if (user == null) {
             return new ResponseEntity<>(user, HttpStatus.EXPECTATION_FAILED);
         }

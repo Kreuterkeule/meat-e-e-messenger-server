@@ -5,4 +5,5 @@ public class RegisterDto {
     public String username;
     public String password;
 
+    public String pubKey;
 }

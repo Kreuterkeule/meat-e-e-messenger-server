@@ -1,9 +1,6 @@
 package com.kreuterkeule.meateemessengerserver.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,18 +18,23 @@ public class UserEntity implements UserDetails {
     private String username;
     private String password;
     private String token;
+    @Column(length = 4096)
+    private String pubKey;
     private boolean accExpired;
     private boolean locked;
     private boolean credExpired;
     private boolean enabled;
+    private boolean isPublic;
 
     public UserEntity() {
     }
 
-    public UserEntity(String username, String password, String token) {
+    public UserEntity(String username, String password, String token, String pubKey) {
         this.username = username;
         this.password = password;
         this.token = token;
+        this.pubKey = pubKey;
+        this.isPublic = false;
         this.enabled = true;
         this.credExpired = false;
         this.locked = false;
@@ -92,5 +94,21 @@ public class UserEntity implements UserDetails {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public String isPubKey() {
+        return pubKey;
+    }
+
+    public void setPubKey(String pubKey) {
+        this.pubKey = pubKey;
     }
 }

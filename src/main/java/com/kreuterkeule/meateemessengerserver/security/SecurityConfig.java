@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((request) -> {
                     try {
                         request
-                        .requestMatchers("/api/login", "/error", "/api/register").permitAll()
+                        .requestMatchers("/api/auth//login", "/error", "/api/auth/register").permitAll()
                         .anyRequest().authenticated()
                                 .and()
                                 .cors().configurationSource(request1 -> new CorsConfiguration().applyPermitDefaultValues());
